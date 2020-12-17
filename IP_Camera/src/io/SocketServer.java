@@ -1,4 +1,4 @@
-package com.dynamsoft.io;
+package io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -14,6 +14,8 @@ import java.util.Enumeration;
 
 import data.BufferManager;
 import data.DataListener;
+import ui.LoginError;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -41,7 +43,7 @@ public class SocketServer extends Thread {
 		// TODO Auto-generated method stub
 		super.run();
 
-		System.out.println("server's waiting");
+		System.out.println("Server's waiting");
 		BufferedInputStream inputStream = null;
 		BufferedOutputStream outputStream = null;
 		Socket socket = null;
@@ -74,7 +76,7 @@ public class SocketServer extends Thread {
 	                JsonElement element = null;
 	                try {
 	                    element =  parser.parse(msg);
-	                    System.out.println("message: "+msg);
+	                    //System.out.println("message: "+msg);
 	                }
 	                catch (JsonParseException e) {
 	                    System.out.println("exception: " + e);
@@ -90,7 +92,6 @@ public class SocketServer extends Thread {
 		                    if (element != null && element.getAsString().equals("data")) {
 		                        element = obj.get("length");
 		                        int length = element.getAsInt();
-		                        System.out.println(length);
 		                        element = obj.get("width");
 		                        int width = element.getAsInt();
 		                        element = obj.get("height");
@@ -99,12 +100,12 @@ public class SocketServer extends Thread {
 		                        imageBuff = new byte[length];
 	                            mBufferManager = new BufferManager(length, width, height);
 	                            mBufferManager.setOnDataListener(mDataListener);
-	                            System.out.println("1..");
 	                            break;
 		                    }
 	                    }
 	                    else {
 	                    	System.out.println("Username or Password is not correct!");
+	                    	LoginError error = new LoginError();
 	                    	break;
 	                    }
 	                }
@@ -119,18 +120,15 @@ public class SocketServer extends Thread {
 		            jsonObj.addProperty("state", "ok");
 		            outputStream.write(jsonObj.toString().getBytes());
 		            outputStream.flush();
-		            System.out.println("2..");
 		            System.out.println(imageBuff);
 		            // read image data
 				    while ((len = inputStream.read(imageBuff)) != -1) {
 	                    mBufferManager.fillBuffer(imageBuff, len);
-	                    System.out.println("3..");
 	                    System.out.println(imageBuff);
 	                }
 				}
 				
 				if (mBufferManager != null) {
-					System.out.println("4..");
 					mBufferManager.close();
 				}
 			}

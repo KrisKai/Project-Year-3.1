@@ -1,10 +1,9 @@
-package com.dynamsoft.ui;
+package ui;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,14 +11,11 @@ import java.awt.event.WindowEvent;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.awt.event.ActionEvent;
-
-import com.dynamsoft.io.SocketServer;
-import com.dynamsoft.ui.ServerUIMain;
 import javax.swing.JTextField;
+import io.SocketServer;
 
 public class MainMonitor {
 
@@ -35,7 +31,7 @@ public class MainMonitor {
 			public void run() {
 				try {
 					MainMonitor window = new MainMonitor();
-					window.frmCamera.setVisible(true);
+					//window.frmCamera.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -61,6 +57,7 @@ public class MainMonitor {
 		frmCamera.setBounds(100, 100, 450, 300);
 		frmCamera.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCamera.getContentPane().setLayout(null);
+		frmCamera.setVisible(true);
 		
 		JLabel lblNewLabel = new JLabel("\u0110\u0103ng nh\u1EADp \u0111\u1EC3 k\u1EBFt n\u1ED1i");
 		lblNewLabel.setBounds(124, 28, 155, 29);
@@ -77,27 +74,22 @@ public class MainMonitor {
 		JButton btnSignin = new JButton("K\u1EBFt n\u1ED1i");
 		btnSignin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				ServerUIMain ui = new ServerUIMain();
 				frmCamera.dispose();
 				JFrame f = new JFrame("Camera");
-	             
-			        f.addWindowListener(new WindowAdapter(){
-			                @Override
-			                public void windowClosing(WindowEvent e) {
-			                    System.exit(0);
-			                }
-			            });
-			        if(!textUser.getText().isEmpty()&&!textPass.getText().isEmpty()) {
-			        	f.getContentPane().add(new ServerUIMain(textUser.getText().toString(),textPass.getText().toString()));
-			        	System.out.print("true");
-			        }
-			        if(textUser.getText().isEmpty()&&textPass.getText().isEmpty()) {
-			        	f.getContentPane().add(new ServerUIMain("null","null"));
-			        	System.out.print("false");
-			        }
-			        f.pack();
-			        f.setVisible(true);
-			        
+				f.addWindowListener(new WindowAdapter(){
+	                @Override
+	                public void windowClosing(WindowEvent e) {
+	                    System.exit(0);
+	                }
+	            });
+				if(!textUser.getText().isEmpty()&&!textPass.getText().isEmpty()) {
+					f.getContentPane().add(new ServerUIMain(textUser.getText().toString(),textPass.getText().toString()));
+				}
+				if(textUser.getText().isEmpty()&&textPass.getText().isEmpty()) {
+					f.getContentPane().add(new ServerUIMain("null","null"));
+				}
+				f.pack();
+				f.setVisible(true);         
 			}
 		});
 		btnSignin.setBounds(138, 192, 97, 21);

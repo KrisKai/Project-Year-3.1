@@ -3,7 +3,7 @@ package data;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import com.dynamsoft.ui.Utils;
+import ui.Utils;
 
 public class BufferManager extends Thread {
     private ImageBuffer[] mBufferQueue;

@@ -1,4 +1,4 @@
-package com.dynamsoft.ui;
+package ui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 
 import data.DataListener;
-import com.dynamsoft.io.SocketServer;
+import io.SocketServer;
  
 public class ServerUIMain extends JPanel implements DataListener{
 	/**
@@ -51,6 +51,10 @@ public class ServerUIMain extends JPanel implements DataListener{
    
         repaint();
     }
+    
+    public void closeUI() {
+    	
+    }
  
     @Override
     public Dimension getPreferredSize() {
@@ -60,22 +64,6 @@ public class ServerUIMain extends JPanel implements DataListener{
            return new Dimension(mImage.getWidth(null), mImage.getHeight(null));
        }
     }
- 
-//    public static void main(String[] args) {
-// 
-//        JFrame f = new JFrame("Monitor");
-//             
-//        f.addWindowListener(new WindowAdapter(){
-//                @Override
-//                public void windowClosing(WindowEvent e) {
-//                    System.exit(0);
-//                }
-//            });
-// 
-//        f.add(new ServerUIMain());
-//        f.pack();
-//        f.setVisible(true);
-//    }
 
 	@Override
 	public void onDirty(BufferedImage bufferedImage) {

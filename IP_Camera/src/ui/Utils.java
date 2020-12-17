@@ -1,4 +1,4 @@
-package com.dynamsoft.ui;
+package ui;
 
 public class Utils {
     
