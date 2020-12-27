@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,18 +23,21 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 public class SocketServer extends Thread {
-	private ServerSocket mServer;
+	
 	private DataListener mDataListener;
 	private BufferManager mBufferManager;
 	private int port = 12321;
 	private String userName;
 	private String passWord;
+	private String ip = "192.168.0.101";
 	public SocketServer() {
 		
 	}
-	public SocketServer(String username, String password) {
+	public SocketServer(String username, String password, String ip, int port) {
 	    this.userName = username;
 	    this.passWord = password;
+	    this.ip = ip;
+	    this.port = port;
 	}
 	public int getPort() {
 		return port;
@@ -42,22 +46,22 @@ public class SocketServer extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		super.run();
-
-		System.out.println("Server's waiting");
+		Socket socket = null;
 		BufferedInputStream inputStream = null;
 		BufferedOutputStream outputStream = null;
-		Socket socket = null;
+		//Socket socket;
 		ByteArrayOutputStream byteArray = null;
 		try {
-			mServer = new ServerSocket(port);
-			while (!Thread.currentThread().isInterrupted()) {
+			//mServer = new ServerSocket(port);
+			socket = new Socket();
+			//while (!Thread.currentThread().isInterrupted()) {
 				if (byteArray != null) {
 					byteArray.reset();}
 				else
 				{
 					byteArray = new ByteArrayOutputStream();
-
-				socket = mServer.accept();
+					socket.connect(new InetSocketAddress(ip, port), 10000); // hard-code server address
+				//socket = mServer.accept();
 				System.out.println("new socket");
 				inputStream = new BufferedInputStream(socket.getInputStream());
 				outputStream = new BufferedOutputStream(socket.getOutputStream());
@@ -76,7 +80,7 @@ public class SocketServer extends Thread {
 	                JsonElement element = null;
 	                try {
 	                    element =  parser.parse(msg);
-	                    //System.out.println("message: "+msg);
+	                    System.out.println("message: "+msg);
 	                }
 	                catch (JsonParseException e) {
 	                    System.out.println("exception: " + e);
@@ -96,7 +100,6 @@ public class SocketServer extends Thread {
 		                        int width = element.getAsInt();
 		                        element = obj.get("height");
 		                        int height = element.getAsInt();
-		                        
 		                        imageBuff = new byte[length];
 	                            mBufferManager = new BufferManager(length, width, height);
 	                            mBufferManager.setOnDataListener(mDataListener);
@@ -125,14 +128,16 @@ public class SocketServer extends Thread {
 				    while ((len = inputStream.read(imageBuff)) != -1) {
 	                    mBufferManager.fillBuffer(imageBuff, len);
 	                    System.out.println(imageBuff);
+	                    System.out.println(3);
 	                }
 				}
 				
 				if (mBufferManager != null) {
 					mBufferManager.close();
+					System.out.println(4);
 				}
 			}
-			}
+			//}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

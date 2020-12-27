@@ -23,6 +23,8 @@ public class MainMonitor {
 	private String ip = null;
 	private JTextField textUser;
 	private JTextField textPass;
+	private JTextField ipField;
+	private JTextField portField;
 	/**
 	 * Launch the application.
 	 */
@@ -83,10 +85,11 @@ public class MainMonitor {
 	                }
 	            });
 				if(!textUser.getText().isEmpty()&&!textPass.getText().isEmpty()) {
-					f.getContentPane().add(new ServerUIMain(textUser.getText().toString(),textPass.getText().toString()));
+					f.getContentPane().add(new ServerUIMain(textUser.getText().toString(),textPass.getText().toString(),ipField.getText().toString(),
+							Integer.parseInt(portField.getText().toString())));
 				}
 				if(textUser.getText().isEmpty()&&textPass.getText().isEmpty()) {
-					f.getContentPane().add(new ServerUIMain("null","null"));
+					f.getContentPane().add(new ServerUIMain("null","null","null",12321));
 				}
 				f.pack();
 				f.setVisible(true);         
@@ -112,17 +115,21 @@ public class MainMonitor {
 		IP.setBounds(33, 69, 81, 21);
 		frmCamera.getContentPane().add(IP);
 		
-		JLabel IP_view = new JLabel(ip.toString());
-		IP_view.setBounds(124, 69, 111, 21);
-		frmCamera.getContentPane().add(IP_view);
-		
 		JLabel lblPort = new JLabel("Port:");
 		lblPort.setBounds(245, 69, 30, 21);
 		frmCamera.getContentPane().add(lblPort);
 		
-		JLabel lblPort_1 = new JLabel(String.valueOf(ss.getPort()));
-		lblPort_1.setBounds(295, 69, 52, 21);
-		frmCamera.getContentPane().add(lblPort_1);
+		ipField = new JTextField();
+		ipField.setText("");
+		ipField.setColumns(10);
+		ipField.setBounds(113, 70, 122, 19);
+		frmCamera.getContentPane().add(ipField);
+		
+		portField = new JTextField();
+		portField.setText("");
+		portField.setColumns(10);
+		portField.setBounds(271, 70, 81, 19);
+		frmCamera.getContentPane().add(portField);
 	}
 	private void findIP() {
 		try {

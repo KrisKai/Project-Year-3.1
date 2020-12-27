@@ -34,8 +34,8 @@ public class ServerUIMain extends JPanel implements DataListener{
         }
     }
  
-    public ServerUIMain(String username, String password) {
-    	SocketServer server = new SocketServer(username,password);
+    public ServerUIMain(String username, String password, String ip, int port) {
+    	SocketServer server = new SocketServer(username,password,ip,port);
         server.setOnDataListener(this);
         server.start();
     }
