@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -22,7 +23,7 @@ public class MainMonitor {
 	private JFrame frmCamera;
 	private String ip = null;
 	private JTextField textUser;
-	private JTextField textPass;
+	private JPasswordField textPass;
 	private JTextField ipField;
 	private JTextField portField;
 	/**
@@ -45,7 +46,7 @@ public class MainMonitor {
 	 * Create the application.
 	 */
 	public MainMonitor() {
-		findIP();
+		//findIP();
 		initialize();
 		
 	}
@@ -84,11 +85,12 @@ public class MainMonitor {
 	                    System.exit(0);
 	                }
 	            });
-				if(!textUser.getText().isEmpty()&&!textPass.getText().isEmpty()) {
+				//System.out.print(textPass.getPassword().toString());	
+				if(!textUser.getText().isEmpty()&&!(textPass.getPassword().length == 0)) {
 					f.getContentPane().add(new ServerUIMain(textUser.getText().toString(),textPass.getText().toString(),ipField.getText().toString(),
 							Integer.parseInt(portField.getText().toString())));
 				}
-				if(textUser.getText().isEmpty()&&textPass.getText().isEmpty()) {
+				if(textUser.getText().isEmpty()&&textPass.getPassword().length == 0) {
 					f.getContentPane().add(new ServerUIMain("null","null","null",12321));
 				}
 				f.pack();
@@ -103,57 +105,56 @@ public class MainMonitor {
 		textUser.setBounds(113, 111, 178, 19);
 		frmCamera.getContentPane().add(textUser);
 		textUser.setColumns(10);
-		
-		SocketServer ss = new SocketServer();
-		textPass = new JTextField();
+
+		textPass = new JPasswordField();
 		textPass.setText("");
 		textPass.setColumns(10);
 		textPass.setBounds(113, 140, 178, 19);
 		frmCamera.getContentPane().add(textPass);
 		
 		JLabel IP = new JLabel("\u0110\u1ECBa ch\u1EC9 IPv4");
-		IP.setBounds(33, 69, 81, 21);
+		IP.setBounds(33, 77, 81, 21);
 		frmCamera.getContentPane().add(IP);
 		
 		JLabel lblPort = new JLabel("Port:");
-		lblPort.setBounds(245, 69, 30, 21);
+		lblPort.setBounds(249, 80, 30, 21);
 		frmCamera.getContentPane().add(lblPort);
 		
 		ipField = new JTextField();
 		ipField.setText("");
 		ipField.setColumns(10);
-		ipField.setBounds(113, 70, 122, 19);
+		ipField.setBounds(113, 82, 122, 19);
 		frmCamera.getContentPane().add(ipField);
 		
 		portField = new JTextField();
 		portField.setText("");
 		portField.setColumns(10);
-		portField.setBounds(271, 70, 81, 19);
+		portField.setBounds(279, 82, 81, 19);
 		frmCamera.getContentPane().add(portField);
 	}
-	private void findIP() {
-		try {
-		    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-		    NetworkInterface iface = null;
-		    while (interfaces.hasMoreElements()) {
-		    	iface = interfaces.nextElement();
-		        // filters out 127.0.0.1 and inactive interfaces
-		        if (iface.isLoopback() || !iface.isUp())
-		            continue;
-
-		        Enumeration<InetAddress> addresses = iface.getInetAddresses();
-		        while(addresses.hasMoreElements()) {
-		            InetAddress addr = addresses.nextElement();
-
-		            // *EDIT*
-		            if (addr instanceof Inet6Address) continue;
-
-		            ip = addr.getHostAddress();
-		        }
-		    }
-		    System.out.println("IPv4 Address: " + ip);
-		} catch (SocketException e) {
-		    throw new RuntimeException(e);
-		}
-	}			
+//	private void findIP() {
+//		try {
+//		    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+//		    NetworkInterface iface = null;
+//		    while (interfaces.hasMoreElements()) {
+//		    	iface = interfaces.nextElement();
+//		        // filters out 127.0.0.1 and inactive interfaces
+//		        if (iface.isLoopback() || !iface.isUp())
+//		            continue;
+//
+//		        Enumeration<InetAddress> addresses = iface.getInetAddresses();
+//		        while(addresses.hasMoreElements()) {
+//		            InetAddress addr = addresses.nextElement();
+//
+//		            // *EDIT*
+//		            if (addr instanceof Inet6Address) continue;
+//
+//		            ip = addr.getHostAddress();
+//		        }
+//		    }
+//		    System.out.println("IPv4 Address: " + ip);
+//		} catch (SocketException e) {
+//		    throw new RuntimeException(e);
+//		}
+//	}			
 }
